@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React, { lazy, Suspense } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import ErrorBoundary from "./components/ErrorBoundaries";
+import AdminLayout from "./layouts/AdminLayout";
+import AuthLayout from "./layouts/AuthLayout";
+import Login from "./modules/Auth/pages/Login";
+const Register = lazy(() => import("./modules/Auth/pages/Register"));
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ErrorBoundary>
+      <Suspense fallback={<div> Loading...</div>}>
+        <Router>
+          <Switch>
+            <Route path={["/login", "/register"]}>
+              <AuthLayout>
+                <Switch>
+                  <Route path="/login">
+                    <Login />
+                  </Route>
+                  <Route path="/register">
+                    <Register />
+                  </Route>
+                </Switch>
+              </AuthLayout>
+            </Route>
+            <Route path={"/admin"}>
+              <AdminLayout></AdminLayout>
+            </Route>
+          </Switch>
+        </Router>
+      </Suspense>
+    </ErrorBoundary>
   );
 }
 
