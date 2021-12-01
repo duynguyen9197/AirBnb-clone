@@ -3,10 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.11.4",
-    "@material-ui/icons": "^4.11.2",
-    "react-date-range": "^1.1.4",
-    "date-fns": "^2.22.1",
     "@ant-design/icons": "^4.7.0",
     "@craco/craco": "^6.4.2",
     "@date-io/moment": "^2.11.0",

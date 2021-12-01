@@ -13,7 +13,7 @@ function App() {
       <Suspense fallback={<div> Loading...</div>}>
         <Router>
           <Switch>
-            <Route exact path={"/"}>
+            <Route path="/">
               <MainLayout>
                 <HomePage />
               </MainLayout>

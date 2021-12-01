@@ -13,16 +13,14 @@ function App() {
       <Suspense fallback={<div> Loading...</div>}>
         <Router>
           <Switch>
-            <Route exact path={"/"}>
-              <MainLayout>
-                <HomePage />
-              </MainLayout>
-            </Route>
-            <Route path={["/login", "/register"]}>
+            <Route path={["/", "/login", "/register"]}>
               <AuthLayout>
                 <Switch>
                   <Route path="/login">
                     <Login />
+                  </Route>
+                  <Route path="/">
+                    <HomePage />
                   </Route>
                   <Route path="/register">
                     <Register />

@@ -3,9 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundaries";
 import AdminLayout from "./layouts/AdminLayout";
 import AuthLayout from "./layouts/AuthLayout";
-import MainLayout from "./layouts/MainLayout";
 import Login from "./modules/Auth/pages/Login";
-import HomePage from "./modules/HomePage/pages/HomePage";
 const Register = lazy(() => import("./modules/Auth/pages/Register"));
 function App() {
   return (
@@ -13,10 +11,8 @@ function App() {
       <Suspense fallback={<div> Loading...</div>}>
         <Router>
           <Switch>
-            <Route exact path={"/"}>
-              <MainLayout>
-                <HomePage />
-              </MainLayout>
+            <Route path={"/"}>
+              <MainLayout />
             </Route>
             <Route path={["/login", "/register"]}>
               <AuthLayout>

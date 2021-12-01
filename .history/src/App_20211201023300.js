@@ -13,10 +13,8 @@ function App() {
       <Suspense fallback={<div> Loading...</div>}>
         <Router>
           <Switch>
-            <Route exact path={"/"}>
-              <MainLayout>
-                <HomePage />
-              </MainLayout>
+            <Route path={"/admin"}>
+              <AdminLayout></AdminLayout>
             </Route>
             <Route path={["/login", "/register"]}>
               <AuthLayout>
