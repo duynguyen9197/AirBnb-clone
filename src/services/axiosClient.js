@@ -27,8 +27,8 @@ axiosClient.interceptors.request.use(
     // Do something before request is sent
     const userJson = localStorage.getItem("user");
     if (userJson) {
-      const { accessToken } = JSON.parse(userJson);
-      config.headers.Authorization = `Bearer ${accessToken}`;
+      const { token } = JSON.parse(userJson);
+      config.headers.token = ` ${token}`;
     }
 
     return config;

@@ -1,21 +1,22 @@
 import React from "react";
-import { Typography, Button, MenuItem } from "@mui/material";
+import { Button, MenuItem } from "@mui/material";
 import { Box } from "@mui/system";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import DatePicker from "../../../components/DatePicker";
+// import DatePicker from "../../../components/DatePicker";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { registerAction } from "../actions/authActions";
-import { useHistory } from "react-router";
-import { AuthInput } from "../components/AuthInput";
+// import { registerAction } from "../actions/authActions";
+// import { FormInput } from "../components/AuthInput";
+import DatePicker from "../../../components/DatePicker";
+import { FormInput } from "./FormInput";
 const LETTER_REGEX =
   "^[a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶ" +
   "ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" +
   "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$";
 const INTEGER_REGEX = /^[0-9]+$/;
-const DATE_REGEX = /^\d{4}[-](0?[1-9]|1[012])[/-](0?[1-9]|[12][0-9]|3[01])$/;
+// const DATE_REGEX = /^\d{4}[-](0?[1-9]|1[012])[/-](0?[1-9]|[12][0-9]|3[01])$/;
 const schema = yup
   .object({
     name: yup
@@ -38,17 +39,17 @@ const schema = yup
       .string()
       .nullable(true)
       .required("Date is required")
-      .matches(DATE_REGEX, "Invalid date")
+      // .matches(DATE_REGEX, "Invalid date")
       .test("birthday", "Invalid age", (value) => {
         return moment().diff(moment(value, "YYYY-MM-DD"), "years") >= 18;
       }),
     gender: yup.boolean().required("Please select your gender"),
+    type: yup.string().required("Please select type"),
     address: yup.string().required("Address is required"),
   })
   .required();
-export default function Register() {
+export default function UserForm({ handleOk, action, values }) {
   const dispatch = useDispatch();
-  const history = useHistory();
   const { isLoading } = useSelector((state) => state.authReducer);
   const {
     control,
@@ -56,37 +57,28 @@ export default function Register() {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      phone: "",
-      birthday: "",
-      gender: true,
-      address: "",
-    },
+    defaultValues: values
+      ? values
+      : {
+          name: "",
+          email: "",
+          password: "",
+          phone: "",
+          birthday: "",
+          gender: true,
+          type: "",
+          address: "",
+        },
   });
-
-  const goToPage = (page) => {
-    history.push(page);
-  };
+  // console.log(values._id);
   const onSubmit = (data) => {
-    dispatch(registerAction(data, goToPage("/")));
+    dispatch(action(data, values?._id));
+    // close modal
+    handleOk();
   };
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Typography variant="body1" color="initial">
-          Already have an account?
-          <Button
-            variant="text"
-            color="primaryBtn"
-            onClick={() => {
-              goToPage("/login");
-            }}>
-            LOG IN
-          </Button>
-        </Typography>
         <Box
           flexDirection="column"
           display="flex"
@@ -95,7 +87,7 @@ export default function Register() {
             name="name"
             control={control}
             render={({ field }) => (
-              <AuthInput
+              <FormInput
                 {...field}
                 label="Name"
                 error={!!errors.name}
@@ -107,7 +99,7 @@ export default function Register() {
             name="email"
             control={control}
             render={({ field }) => (
-              <AuthInput
+              <FormInput
                 {...field}
                 label="email"
                 error={!!errors.email}
@@ -115,23 +107,25 @@ export default function Register() {
               />
             )}
           />
-          <Controller
-            name="password"
-            control={control}
-            render={({ field }) => (
-              <AuthInput
-                {...field}
-                label="password"
-                error={!!errors.password}
-                helperText={errors.password?.message}
-              />
-            )}
-          />
+          {!values && (
+            <Controller
+              name="password"
+              control={control}
+              render={({ field }) => (
+                <FormInput
+                  {...field}
+                  label="password"
+                  error={!!errors.password}
+                  helperText={errors.password?.message}
+                />
+              )}
+            />
+          )}
           <Controller
             name="phone"
             control={control}
             render={({ field }) => (
-              <AuthInput
+              <FormInput
                 {...field}
                 label="Telephone"
                 error={!!errors.phone}
@@ -143,7 +137,7 @@ export default function Register() {
             name="gender"
             control={control}
             render={({ field }) => (
-              <AuthInput
+              <FormInput
                 {...field}
                 select
                 label="Gender"
@@ -155,14 +149,33 @@ export default function Register() {
                 <MenuItem key={"Female"} value={false}>
                   Female
                 </MenuItem>
-              </AuthInput>
+              </FormInput>
+            )}
+          />
+          <Controller
+            name="type"
+            control={control}
+            render={({ field }) => (
+              <FormInput
+                {...field}
+                select
+                label="Type"
+                error={!!errors.type}
+                helperText={errors.type?.message}>
+                <MenuItem key={"ADMIN"} value={"ADMIN"}>
+                  ADMIN
+                </MenuItem>
+                <MenuItem key={"CLIENT"} value={"CLIENT"}>
+                  CLIENT
+                </MenuItem>
+              </FormInput>
             )}
           />
           <Controller
             name="address"
             control={control}
             render={({ field }) => (
-              <AuthInput
+              <FormInput
                 {...field}
                 label="Address"
                 error={!!errors.address}
@@ -170,13 +183,13 @@ export default function Register() {
               />
             )}
           />
-          <DatePicker control={control} errors={errors} />
+          <DatePicker control={control} errors={errors}></DatePicker>
           <Button
             disabled={isLoading}
             type="submit"
             variant="contained"
             color="primaryBtn">
-            SIGN UP
+            SUBMIT
           </Button>
         </Box>
       </form>
