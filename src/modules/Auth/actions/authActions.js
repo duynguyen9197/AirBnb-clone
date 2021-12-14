@@ -27,8 +27,9 @@ export const loginAction = (value, goToPage) => {
   return async (dispatch) => {
     dispatch({ type: LOGIN_REQUEST });
     try {
-      await postLoginAPI(value);
-      dispatch({ type: LOGIN_SUCCESS });
+      const data = await postLoginAPI(value);
+      dispatch({ type: LOGIN_SUCCESS, payload: data });
+      localStorage.setItem("user", JSON.stringify(data));
       goToPage();
     } catch (error) {
       console.log(error);

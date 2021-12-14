@@ -7,7 +7,7 @@ import "antd/dist/antd.css";
 import "./../styles/index.css";
 import { NavLink } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import UserManagerment from "../modules/UserManagerment/page/UserManagerment";
+import UserManagerment from "../modules/Admin/page/UserManagerment";
 import LogoSvg from "../components/LogoSvg";
 // const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
