@@ -1,0 +1,13 @@
+export const GET_LISTROOM = "GET_LISTROOM";
+export const FILTER_ROOM = "FILTER_ROOM";
+export const FILTER_PRICE = "FILTER_PRICE";
+export const OPEN_MODAL_FILTER = "OPEN_MODAL_FILTER";
+export const CLOSE_MODAL_FILTER = "CLOSE_MODAL_FILTER";
+
+export const DETAIL_ROOM = "DETAIL_ROOM";
+export const DETAIL_RATING_ROOM = "DETAIL_RATING_ROOM";
+export const SHOW_MODAL_RATED = "SHOW_MODAL_RATED";
+export const HIDE_MODAL_RATED = "HIDE_MODAL_RATED";
+export const PAY_BOOKING_ROOM = "PAY_BOOKING_ROOM";
+
+export const NEW_ROOM = "NEW_ROOM";
